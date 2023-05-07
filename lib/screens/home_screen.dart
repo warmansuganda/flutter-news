@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 class HomeScreen extends StatefulWidget {
+  static const routeName = '/home_screen';
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
