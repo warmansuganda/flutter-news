@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -32,8 +33,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SafeArea(child: Text('Welcome')),
+    return Scaffold(
+      body: SafeArea(
+          child: Column(
+        children: [
+          SvgPicture.asset(
+            'assets/images/flutter-logo.svg',
+            width: 100,
+          ),
+          const Text('Welcome'),
+        ],
+      )),
     );
   }
 }
