@@ -5,7 +5,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart';
 
 class HomeScreen extends StatefulWidget {
-  static const routeName = '/home_screen';
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -67,32 +66,30 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-          child: RefreshIndicator(
-        onRefresh: handleRefresh,
-        child: Column(
-          children: [
-            SvgPicture.asset(
-              'assets/images/flutter-logo.svg',
-              width: 100,
-            ),
-            Flexible(
-              child: ListView.builder(
-                  controller: controller,
-                  shrinkWrap: true,
-                  itemCount: items.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      child: ListTile(
-                        title: Text(items[index]),
-                      ),
-                    );
-                  }),
-            ),
-          ],
-        ),
-      )),
-    );
+    return SafeArea(
+        child: RefreshIndicator(
+      onRefresh: handleRefresh,
+      child: Column(
+        children: [
+          SvgPicture.asset(
+            'assets/images/flutter-logo.svg',
+            width: 100,
+          ),
+          Flexible(
+            child: ListView.builder(
+                controller: controller,
+                shrinkWrap: true,
+                itemCount: items.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: ListTile(
+                      title: Text(items[index]),
+                    ),
+                  );
+                }),
+          ),
+        ],
+      ),
+    ));
   }
 }
