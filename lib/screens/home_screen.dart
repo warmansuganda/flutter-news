@@ -103,14 +103,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     News item = items[index];
                     dynamic thumbnail = item.multimedia.firstWhere((element) =>
                         element['subtype'] == 'mediumThreeByTwo440');
-                    return Column(
-                      children: [
-                        FadeInImage.assetNetwork(
-                            placeholder: 'assets/images/default-image.png',
-                            image:
-                                'https://static01.nyt.com/${thumbnail['url'] ?? ''}'),
-                        Text(item.abstract),
-                      ],
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                      child: Column(
+                        children: [
+                          ClipRRect(
+                              borderRadius: BorderRadius.circular(16.0),
+                              child: FadeInImage.assetNetwork(
+                                  placeholder:
+                                      'assets/images/default-image.png',
+                                  image:
+                                      'https://static01.nyt.com/${thumbnail['url'] ?? ''}')),
+                          Text(item.abstract),
+                          const SizedBox(height: 10.0)
+                        ],
+                      ),
                     );
                   }
                 }),
