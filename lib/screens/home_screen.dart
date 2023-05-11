@@ -1,8 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_news/domain/entities/news.dart';
+import 'package:flutter_news/domain/repositories/news.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:http/http.dart';
+import 'package:skeletons/skeletons.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -15,26 +15,27 @@ class _HomeScreenState extends State<HomeScreen> {
   final controller = ScrollController();
   bool isLoading = false;
 
-  List<String> items = [];
+  List<News> items = [];
 
   void getData({bool isRefresh = false}) async {
     if (isLoading) return;
-    isLoading = true;
-    var url = Uri.https('api.nytimes.com', 'svc/search/v2/articlesearch.json', {
-      'api-key': 'F81ff4Bj1S6cKDVQCC2XEWXMRaGpzaBA',
-      'page': '1',
+    setState(() {
+      isLoading = true;
     });
-    Response response = await get(url);
-    if (response.statusCode == 200) {
-      Map jsonResponse = jsonDecode(response.body);
-      print(jsonResponse['copyright']);
+    try {
+      final result = await NewsRepository.getNews();
+
       setState(() {
         isLoading = false;
         if (isRefresh) {
-          items = List.generate(15, (index) => 'Item ${index + 1}');
+          items = result.docs;
         } else {
-          items.addAll(List.generate(15, (index) => 'Item ${index + 1}'));
+          items.addAll(result.docs);
         }
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
       });
     }
   }
@@ -79,13 +80,39 @@ class _HomeScreenState extends State<HomeScreen> {
             child: ListView.builder(
                 controller: controller,
                 shrinkWrap: true,
-                itemCount: items.length,
+                itemCount: items.length + 1,
                 itemBuilder: (context, index) {
-                  return Card(
-                    child: ListTile(
-                      title: Text(items[index]),
-                    ),
-                  );
+                  if (index == items.length) {
+                    // if (isLoading) {
+                    return SkeletonItem(
+                        child: Column(
+                      children: [
+                        SkeletonAvatar(
+                          style: SkeletonAvatarStyle(
+                            width: double.infinity,
+                            minHeight: MediaQuery.of(context).size.height / 8,
+                            maxHeight: MediaQuery.of(context).size.height / 3,
+                          ),
+                        ),
+                      ],
+                    ));
+                    // } else {
+                    //   return const SizedBox.shrink();
+                    // }
+                  } else {
+                    News item = items[index];
+                    dynamic thumbnail = item.multimedia.firstWhere((element) =>
+                        element['subtype'] == 'mediumThreeByTwo440');
+                    return Column(
+                      children: [
+                        FadeInImage.assetNetwork(
+                            placeholder: 'assets/images/default-image.png',
+                            image:
+                                'https://static01.nyt.com/${thumbnail['url'] ?? ''}'),
+                        Text(item.abstract),
+                      ],
+                    );
+                  }
                 }),
           ),
         ],
