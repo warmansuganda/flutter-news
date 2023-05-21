@@ -83,47 +83,61 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemCount: items.length + 1,
                 itemBuilder: (context, index) {
                   if (index == items.length) {
-                    // if (isLoading) {
-                    return SkeletonItem(
-                        child: Column(
-                      children: [
-                        SkeletonAvatar(
-                          style: SkeletonAvatarStyle(
-                            width: double.infinity,
-                            minHeight: MediaQuery.of(context).size.height / 8,
-                            maxHeight: MediaQuery.of(context).size.height / 3,
+                    if (isLoading) {
+                      return SkeletonItem(
+                          child: Column(
+                        children: [
+                          SkeletonAvatar(
+                            style: SkeletonAvatarStyle(
+                              width: double.infinity,
+                              minHeight: MediaQuery.of(context).size.height / 8,
+                              maxHeight: MediaQuery.of(context).size.height / 3,
+                            ),
                           ),
-                        ),
-                      ],
-                    ));
-                    // } else {
-                    //   return const SizedBox.shrink();
-                    // }
+                        ],
+                      ));
+                    } else {
+                      return const SizedBox.shrink();
+                    }
                   } else {
                     News item = items[index];
                     dynamic thumbnail = item.multimedia.firstWhere((element) =>
                         element['subtype'] == 'mediumThreeByTwo440');
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                      child: Column(
-                        children: [
-                          ClipRRect(
-                              borderRadius: BorderRadius.circular(16.0),
-                              child: FadeInImage.assetNetwork(
-                                  placeholder:
-                                      'assets/images/default-image.png',
-                                  image:
-                                      'https://static01.nyt.com/${thumbnail['url'] ?? ''}')),
-                          Text(item.abstract),
-                          const SizedBox(height: 10.0)
-                        ],
-                      ),
-                    );
+                    return NewsCard(thumbnail: thumbnail, item: item);
                   }
                 }),
           ),
         ],
       ),
     ));
+  }
+}
+
+class NewsCard extends StatelessWidget {
+  const NewsCard({
+    super.key,
+    required this.thumbnail,
+    required this.item,
+  });
+
+  final dynamic thumbnail;
+  final News item;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+      child: Column(
+        children: [
+          ClipRRect(
+              borderRadius: BorderRadius.circular(16.0),
+              child: FadeInImage.assetNetwork(
+                  placeholder: 'assets/images/default-image.png',
+                  image: 'https://static01.nyt.com/${thumbnail['url'] ?? ''}')),
+          Text(item.abstract),
+          const SizedBox(height: 10.0)
+        ],
+      ),
+    );
   }
 }
