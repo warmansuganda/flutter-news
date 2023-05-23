@@ -5,11 +5,11 @@ import 'package:flutter_news/domain/repositories/repository.dart';
 import 'package:http/http.dart';
 
 class NewsRepository {
-  static Future<RepositoryResponse<List<News>>> getNews() async {
+  static Future<RepositoryResponse<List<News>>> getNews(int page) async {
     final url =
         Uri.https('api.nytimes.com', 'svc/search/v2/articlesearch.json', {
       'api-key': 'F81ff4Bj1S6cKDVQCC2XEWXMRaGpzaBA',
-      'page': '1',
+      'page': page.toString(),
     });
     Response response = await get(url);
     Map jsonResponse = jsonDecode(response.body);

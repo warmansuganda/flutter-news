@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_news/domain/entities/news.dart';
 import 'package:flutter_news/domain/repositories/news.dart';
+import 'package:flutter_news/widgets/news_card.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:skeletons/skeletons.dart';
 
@@ -14,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final controller = ScrollController();
   bool isLoading = false;
+  int page = 0;
 
   List<News> items = [];
 
@@ -23,10 +25,12 @@ class _HomeScreenState extends State<HomeScreen> {
       isLoading = true;
     });
     try {
-      final result = await NewsRepository.getNews();
+      int requestPage = isRefresh ? 1 : page + 1;
+      final result = await NewsRepository.getNews(requestPage);
 
       setState(() {
         isLoading = false;
+        page = requestPage;
         if (isRefresh) {
           items = result.docs;
         } else {
@@ -43,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    getData(isRefresh: true);
+    getData();
     controller.addListener(() {
       if (controller.position.maxScrollExtent == controller.offset) {
         getData();
@@ -77,10 +81,11 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 100,
           ),
           Flexible(
-            child: ListView.builder(
+            child: ListView.separated(
                 controller: controller,
                 shrinkWrap: true,
                 itemCount: items.length + 1,
+                separatorBuilder: (context, inde) => const Divider(),
                 itemBuilder: (context, index) {
                   if (index == items.length) {
                     if (isLoading) {
@@ -100,44 +105,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       return const SizedBox.shrink();
                     }
                   } else {
-                    News item = items[index];
-                    dynamic thumbnail = item.multimedia.firstWhere((element) =>
-                        element['subtype'] == 'mediumThreeByTwo440');
-                    return NewsCard(thumbnail: thumbnail, item: item);
+                    return NewsCard(item: items[index]);
                   }
                 }),
           ),
         ],
       ),
     ));
-  }
-}
-
-class NewsCard extends StatelessWidget {
-  const NewsCard({
-    super.key,
-    required this.thumbnail,
-    required this.item,
-  });
-
-  final dynamic thumbnail;
-  final News item;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-      child: Column(
-        children: [
-          ClipRRect(
-              borderRadius: BorderRadius.circular(16.0),
-              child: FadeInImage.assetNetwork(
-                  placeholder: 'assets/images/default-image.png',
-                  image: 'https://static01.nyt.com/${thumbnail['url'] ?? ''}')),
-          Text(item.abstract),
-          const SizedBox(height: 10.0)
-        ],
-      ),
-    );
   }
 }
