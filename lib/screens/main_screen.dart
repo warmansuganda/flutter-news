@@ -13,10 +13,25 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
-  static const List<Widget> _widgetOptions = <Widget>[
+  static const List<Widget> screens = <Widget>[
     HomeScreen(),
     LibraryScreen(),
     AccountScreen(),
+  ];
+
+  final List<BottomNavigationBarItem> navigations = [
+    const BottomNavigationBarItem(
+      icon: Icon(Icons.home),
+      label: 'Home',
+    ),
+    const BottomNavigationBarItem(
+      icon: Icon(Icons.local_library),
+      label: 'Library',
+    ),
+    const BottomNavigationBarItem(
+      icon: Icon(Icons.account_circle),
+      label: 'Account',
+    ),
   ];
 
   void _onItemTapped(int index) {
@@ -28,22 +43,9 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _widgetOptions.elementAt(_selectedIndex),
+      body: IndexedStack(index: _selectedIndex, children: screens),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.local_library),
-            label: 'Library',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Account',
-          ),
-        ],
+        items: navigations,
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.blue,
         onTap: _onItemTapped,

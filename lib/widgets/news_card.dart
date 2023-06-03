@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_news/domain/entities/news.dart';
+import 'package:flutter_news/widgets/buy_button.dart';
 
 class NewsCard extends StatelessWidget {
   const NewsCard({
@@ -58,27 +59,7 @@ class NewsCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                OutlinedButton(
-                  onPressed: handleBuy,
-                  style: OutlinedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50.0))),
-                  child: const Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    spacing: 6.0,
-                    children: [
-                      Text(
-                        '\$ 50.000',
-                      ),
-                      Text(
-                        '|',
-                      ),
-                      Text(
-                        'Buy Now',
-                      ),
-                    ],
-                  ),
-                )
+                const BuyButton(),
               ],
             )
           ],

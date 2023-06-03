@@ -71,46 +71,77 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: RefreshIndicator(
-      onRefresh: handleRefresh,
-      child: Column(
-        children: [
-          SvgPicture.asset(
-            'assets/images/flutter-logo.svg',
-            width: 100,
+    return Scaffold(
+      appBar: AppBar(
+        title: SvgPicture.asset(
+          'assets/images/flutter-logo.svg',
+          width: 100,
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GestureDetector(
+              onTap: () {},
+              child: const Icon(
+                Icons.search,
+                size: 26.0,
+                color: Colors.blue,
+              ),
+            ),
           ),
-          Flexible(
-            child: ListView.separated(
-                controller: controller,
-                shrinkWrap: true,
-                itemCount: items.length + 1,
-                separatorBuilder: (context, inde) => const Divider(),
-                itemBuilder: (context, index) {
-                  if (index == items.length) {
-                    if (isLoading) {
-                      return SkeletonItem(
-                          child: Column(
-                        children: [
-                          SkeletonAvatar(
-                            style: SkeletonAvatarStyle(
-                              width: double.infinity,
-                              minHeight: MediaQuery.of(context).size.height / 8,
-                              maxHeight: MediaQuery.of(context).size.height / 3,
-                            ),
-                          ),
-                        ],
-                      ));
-                    } else {
-                      return const SizedBox.shrink();
-                    }
-                  } else {
-                    return NewsCard(item: items[index]);
-                  }
-                }),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GestureDetector(
+              onTap: () {},
+              child: const Icon(
+                Icons.filter_list,
+                size: 26.0,
+                color: Colors.blue,
+              ),
+            ),
           ),
         ],
+        backgroundColor: Colors.white,
       ),
-    ));
+      body: RefreshIndicator(
+        onRefresh: handleRefresh,
+        child: Column(
+          children: [
+            Flexible(
+              child: ListView.separated(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  controller: controller,
+                  shrinkWrap: true,
+                  itemCount: items.length + 1,
+                  separatorBuilder: (context, inde) => const Divider(),
+                  itemBuilder: (context, index) {
+                    if (index == items.length) {
+                      if (isLoading) {
+                        return SkeletonItem(
+                            child: Column(
+                          children: [
+                            SkeletonAvatar(
+                              style: SkeletonAvatarStyle(
+                                width: double.infinity,
+                                minHeight:
+                                    MediaQuery.of(context).size.height / 8,
+                                maxHeight:
+                                    MediaQuery.of(context).size.height / 3,
+                              ),
+                            ),
+                          ],
+                        ));
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    } else {
+                      return NewsCard(item: items[index]);
+                    }
+                  }),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
