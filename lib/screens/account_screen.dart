@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_news/screens/coupon_screen.dart';
+import 'package:flutter_news/screens/transaction_screen.dart';
 import 'package:flutter_news/widgets/logo.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -28,7 +30,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 children: [
                   ClipOval(
                     child: Image.network(
-                      'https://i.pravatar.cc/300',
+                      'https://i.pravatar.cc/300?img=3',
                       width: 120.0,
                       height: 120.0,
                       fit: BoxFit.cover,
@@ -54,25 +56,31 @@ class _AccountScreenState extends State<AccountScreen> {
               padding: const EdgeInsets.all(10.0),
               child: Column(
                 children: [
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         "Wallet",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18.0),
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            "View Transaction",
-                            style: TextStyle(color: Colors.blue),
-                          ),
-                          Icon(
-                            Icons.chevron_right,
-                            color: Colors.blue,
-                          )
-                        ],
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(TransactionScreen.routeName);
+                        },
+                        child: const Row(
+                          children: [
+                            Text(
+                              "View Transaction",
+                              style: TextStyle(color: Colors.blue),
+                            ),
+                            Icon(
+                              Icons.chevron_right,
+                              color: Colors.blue,
+                            )
+                          ],
+                        ),
                       )
                     ],
                   ),
@@ -163,40 +171,46 @@ class _AccountScreenState extends State<AccountScreen> {
                   const SizedBox(
                     height: 24.0,
                   ),
-                  Card(
-                    margin: const EdgeInsets.all(0),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Icon(
-                            Icons.verified,
-                            color: Colors.green,
-                            size: 32.0,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Coupon",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(
-                                height: 4.0,
-                              ),
-                              Text(
-                                "Redeem your coupon, and get the prize",
-                                style: TextStyle(color: Colors.grey[600]),
-                              ),
-                            ],
-                          ),
-                          const Icon(
-                            Icons.chevron_right,
-                            color: Colors.grey,
-                          ),
-                        ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(CouponScreen.routeName);
+                    },
+                    child: Card(
+                      margin: const EdgeInsets.all(0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Icon(
+                              Icons.verified,
+                              color: Colors.green,
+                              size: 32.0,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Coupon",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(
+                                  height: 4.0,
+                                ),
+                                Text(
+                                  "Redeem your coupon, and get the prize",
+                                  style: TextStyle(color: Colors.grey[600]),
+                                ),
+                              ],
+                            ),
+                            const Icon(
+                              Icons.chevron_right,
+                              color: Colors.grey,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
