@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_news/providers/main/navigation_provider.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_news/widgets/buy_button.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -10,7 +10,7 @@ class DetailScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final count = ref.watch(navigationProvider);
+    final count = useState(0);
 
     return Scaffold(
       appBar: AppBar(
@@ -22,7 +22,16 @@ class DetailScreen extends HookConsumerWidget {
         iconTheme: const IconThemeData(color: Colors.blue),
       ),
       body: SingleChildScrollView(
-        child: Container(),
+        child: Column(
+          children: [
+            Text("Count ${count.value}"),
+            OutlinedButton(
+                onPressed: () {
+                  count.value++;
+                },
+                child: const Text("test"))
+          ],
+        ),
       ),
       floatingActionButton: const BuyButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
