@@ -4,9 +4,10 @@ import 'package:flutter_news/screens/detail_screen.dart';
 import 'package:flutter_news/screens/main_screen.dart';
 import 'package:flutter_news/screens/splash_screen.dart';
 import 'package:flutter_news/screens/transaction_screen.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_news/providers/main/navigation_provider.dart';
 import 'package:flutter_news/screens/account_screen.dart';
 import 'package:flutter_news/screens/home_screen.dart';
 import 'package:flutter_news/screens/library_screen.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class MainScreen extends StatefulWidget {
+class MainScreen extends ConsumerWidget {
   static const routeName = '/main_screen';
+
   const MainScreen({Key? key}) : super(key: key);
 
-  @override
-  State<MainScreen> createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> {
-  int _selectedIndex = 0;
   static const List<Widget> screens = <Widget>[
     HomeScreen(),
     LibraryScreen(),
     AccountScreen(),
   ];
 
-  final List<BottomNavigationBarItem> navigations = [
+  static List<BottomNavigationBarItem> navigations = [
     const BottomNavigationBarItem(
       icon: Icon(Icons.home),
       label: 'Home',
@@ -34,21 +31,19 @@ class _MainScreenState extends State<MainScreen> {
     ),
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final nav = ref.watch(navigationProvider);
+
     return Scaffold(
-      body: IndexedStack(index: _selectedIndex, children: screens),
+      body: IndexedStack(index: nav.selectedIndex, children: screens),
       bottomNavigationBar: BottomNavigationBar(
         items: navigations,
-        currentIndex: _selectedIndex,
+        currentIndex: nav.selectedIndex,
         selectedItemColor: Colors.blue,
-        onTap: _onItemTapped,
+        onTap: (int index) {
+          ref.read(navigationProvider.notifier).goTo(index);
+        },
       ),
     );
   }

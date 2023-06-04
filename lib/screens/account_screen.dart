@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_news/providers/main/navigation_provider.dart';
 import 'package:flutter_news/screens/coupon_screen.dart';
 import 'package:flutter_news/screens/transaction_screen.dart';
 import 'package:flutter_news/widgets/logo.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AccountScreen extends StatefulWidget {
+class AccountScreen extends ConsumerWidget {
   const AccountScreen({Key? key}) : super(key: key);
 
   @override
-  State<AccountScreen> createState() => _AccountScreenState();
-}
-
-class _AccountScreenState extends State<AccountScreen> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: const Logo(),
@@ -118,25 +115,30 @@ class _AccountScreenState extends State<AccountScreen> {
                   const SizedBox(
                     height: 24.0,
                   ),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         "Subscription",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18.0),
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            "View Library",
-                            style: TextStyle(color: Colors.blue),
-                          ),
-                          Icon(
-                            Icons.chevron_right,
-                            color: Colors.blue,
-                          )
-                        ],
+                      GestureDetector(
+                        onTap: () {
+                          ref.read(navigationProvider.notifier).goTo(1);
+                        },
+                        child: const Row(
+                          children: [
+                            Text(
+                              "View Library",
+                              style: TextStyle(color: Colors.blue),
+                            ),
+                            Icon(
+                              Icons.chevron_right,
+                              color: Colors.blue,
+                            )
+                          ],
+                        ),
                       )
                     ],
                   ),

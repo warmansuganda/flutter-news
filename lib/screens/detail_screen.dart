@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_news/providers/main/navigation_provider.dart';
 import 'package:flutter_news/widgets/buy_button.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends HookConsumerWidget {
   static const routeName = '/detail_screen';
 
   const DetailScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final count = ref.watch(navigationProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -18,9 +22,7 @@ class DetailScreen extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.blue),
       ),
       body: SingleChildScrollView(
-        child: Container(
-          height: 2000,
-        ),
+        child: Container(),
       ),
       floatingActionButton: const BuyButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
