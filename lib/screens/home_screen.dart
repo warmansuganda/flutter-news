@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_news/domain/entities/news.dart';
 import 'package:flutter_news/domain/repositories/news.dart';
+import 'package:flutter_news/widgets/logo.dart';
 import 'package:flutter_news/widgets/news_card.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:skeletons/skeletons.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -73,10 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: SvgPicture.asset(
-          'assets/images/flutter-logo.svg',
-          width: 100,
-        ),
+        title: const Logo(),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
