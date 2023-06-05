@@ -1,31 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_news/domain/entities/news.dart';
+import 'package:flutter_news/widgets/empty_state.dart';
 import 'package:flutter_news/widgets/logo.dart';
 import 'package:flutter_news/widgets/news_card.dart';
-import 'package:skeletons/skeletons.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class LibraryScreen extends StatefulWidget {
+import '../providers/news/transaction_provider.dart';
+
+class LibraryScreen extends ConsumerWidget {
   const LibraryScreen({Key? key}) : super(key: key);
 
   @override
-  State<LibraryScreen> createState() => _LibraryScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    List<News> items = ref.watch(navigationProvider);
 
-class _LibraryScreenState extends State<LibraryScreen> {
-  final controller = ScrollController();
-  bool isLoading = false;
-  int page = 0;
+    final controller = ScrollController();
 
-  List<News> items = [];
-
-  Future handleRefresh() async {
-    setState(() {
-      isLoading = false;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Logo(),
@@ -55,45 +45,17 @@ class _LibraryScreenState extends State<LibraryScreen> {
           ),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: handleRefresh,
-        child: Column(
-          children: [
-            Flexible(
-              child: ListView.separated(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  controller: controller,
-                  shrinkWrap: true,
-                  itemCount: items.length + 1,
-                  separatorBuilder: (context, inde) => const Divider(),
-                  itemBuilder: (context, index) {
-                    if (index == items.length) {
-                      if (isLoading) {
-                        return SkeletonItem(
-                            child: Column(
-                          children: [
-                            SkeletonAvatar(
-                              style: SkeletonAvatarStyle(
-                                width: double.infinity,
-                                minHeight:
-                                    MediaQuery.of(context).size.height / 8,
-                                maxHeight:
-                                    MediaQuery.of(context).size.height / 3,
-                              ),
-                            ),
-                          ],
-                        ));
-                      } else {
-                        return const SizedBox.shrink();
-                      }
-                    } else {
-                      return NewsCard(item: items[index]);
-                    }
-                  }),
-            ),
-          ],
-        ),
-      ),
+      body: items.isNotEmpty
+          ? ListView.separated(
+              padding: const EdgeInsets.only(top: 10.0),
+              controller: controller,
+              shrinkWrap: true,
+              itemCount: items.length,
+              separatorBuilder: (context, inde) => const Divider(),
+              itemBuilder: (context, index) {
+                return NewsCard(item: items[index]);
+              })
+          : const EmptyState(),
     );
   }
 }

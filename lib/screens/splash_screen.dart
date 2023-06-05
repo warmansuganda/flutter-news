@@ -50,7 +50,6 @@ class _SplashScreenState extends State<SplashScreen>
     _animationController.repeat(reverse: true);
 
     Timer(const Duration(seconds: 2), () {
-      // Navigator.of(context).pushReplacementNamed(MainScreen.routeName);
       _startMainScreen();
     });
   }

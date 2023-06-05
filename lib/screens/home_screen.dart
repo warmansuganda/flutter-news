@@ -102,35 +102,29 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: RefreshIndicator(
         onRefresh: handleRefresh,
-        child: Column(
-          children: [
-            Flexible(
-              child: ListView.separated(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  controller: controller,
-                  shrinkWrap: true,
-                  itemCount: items.length + 1,
-                  separatorBuilder: (context, inde) => const Divider(),
-                  itemBuilder: (context, index) {
-                    if (index == items.length) {
-                      if (isLoading) {
-                        return const Column(
-                          children: [
-                            NewsSkeleton(),
-                            Divider(),
-                            NewsSkeleton(),
-                          ],
-                        );
-                      } else {
-                        return const SizedBox.shrink();
-                      }
-                    } else {
-                      return NewsCard(item: items[index]);
-                    }
-                  }),
-            ),
-          ],
-        ),
+        child: ListView.separated(
+            padding: const EdgeInsets.only(top: 10.0),
+            controller: controller,
+            shrinkWrap: true,
+            itemCount: items.length + 1,
+            separatorBuilder: (context, inde) => const Divider(),
+            itemBuilder: (context, index) {
+              if (index == items.length) {
+                if (isLoading) {
+                  return const Column(
+                    children: [
+                      NewsSkeleton(),
+                      Divider(),
+                      NewsSkeleton(),
+                    ],
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              } else {
+                return NewsCard(item: items[index]);
+              }
+            }),
       ),
     );
   }
