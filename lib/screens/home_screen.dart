@@ -3,7 +3,7 @@ import 'package:flutter_news/domain/entities/news.dart';
 import 'package:flutter_news/domain/repositories/news.dart';
 import 'package:flutter_news/widgets/logo.dart';
 import 'package:flutter_news/widgets/news_card.dart';
-import 'package:skeletons/skeletons.dart';
+import 'package:flutter_news/widgets/news_skeleton.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -114,20 +114,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemBuilder: (context, index) {
                     if (index == items.length) {
                       if (isLoading) {
-                        return SkeletonItem(
-                            child: Column(
+                        return const Column(
                           children: [
-                            SkeletonAvatar(
-                              style: SkeletonAvatarStyle(
-                                width: double.infinity,
-                                minHeight:
-                                    MediaQuery.of(context).size.height / 8,
-                                maxHeight:
-                                    MediaQuery.of(context).size.height / 3,
-                              ),
-                            ),
+                            NewsSkeleton(),
+                            Divider(),
+                            NewsSkeleton(),
                           ],
-                        ));
+                        );
                       } else {
                         return const SizedBox.shrink();
                       }
