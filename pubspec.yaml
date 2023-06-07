@@ -40,6 +40,7 @@ dependencies:
   skeletons: ^0.0.3
   hooks_riverpod: ^2.3.6
   flutter_hooks: ^0.18.6
+  fluttertoast: ^8.2.2
 
 dev_dependencies:
   flutter_test:

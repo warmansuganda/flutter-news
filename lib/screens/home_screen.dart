@@ -1,47 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_news/domain/entities/news.dart';
-import 'package:flutter_news/domain/repositories/news.dart';
+import 'package:flutter_news/providers/news/news_provider.dart';
 import 'package:flutter_news/widgets/logo.dart';
 import 'package:flutter_news/widgets/news_card.dart';
 import 'package:flutter_news/widgets/news_skeleton.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatefulHookConsumerWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   final controller = ScrollController();
-  bool isLoading = false;
-  int page = 0;
 
-  List<News> items = [];
+  Future<void> getData({bool isRefresh = false}) async {
+    await ref.read(newsProvider.notifier).getData(isRefresh: isRefresh);
+  }
 
-  void getData({bool isRefresh = false}) async {
-    if (isLoading) return;
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      int requestPage = isRefresh ? 1 : page + 1;
-      final result = await NewsRepository.getNews(requestPage);
-
-      setState(() {
-        isLoading = false;
-        page = requestPage;
-        if (isRefresh) {
-          items = result.docs;
-        } else {
-          items.addAll(result.docs);
-        }
-      });
-    } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-    }
+  Future handleRefresh() async {
+    getData(isRefresh: true);
   }
 
   @override
@@ -56,21 +35,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  Future handleRefresh() async {
-    setState(() {
-      isLoading = false;
-    });
-
-    getData(isRefresh: true);
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final news = ref.watch(newsProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Logo(),
@@ -106,11 +73,11 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.only(top: 10.0),
             controller: controller,
             shrinkWrap: true,
-            itemCount: items.length + 1,
+            itemCount: news.items.length + 1,
             separatorBuilder: (context, inde) => const Divider(),
             itemBuilder: (context, index) {
-              if (index == items.length) {
-                if (isLoading) {
+              if (index == news.items.length) {
+                if (news.isLoading) {
                   return const Column(
                     children: [
                       NewsSkeleton(),
@@ -122,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   return const SizedBox.shrink();
                 }
               } else {
-                return NewsCard(item: items[index]);
+                return NewsCard(item: news.items[index]);
               }
             }),
       ),

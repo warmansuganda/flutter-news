@@ -5,18 +5,23 @@ import 'package:flutter_news/screens/home_screen.dart';
 import 'package:flutter_news/screens/library_screen.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class MainScreen extends ConsumerWidget {
+class MainScreen extends StatefulHookConsumerWidget {
   static const routeName = '/main_screen';
 
   const MainScreen({Key? key}) : super(key: key);
 
-  static const List<Widget> screens = <Widget>[
-    HomeScreen(),
-    LibraryScreen(),
-    AccountScreen(),
+  @override
+  ConsumerState<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends ConsumerState<MainScreen> {
+  final List<Widget> screens = <Widget>[
+    const HomeScreen(),
+    const LibraryScreen(),
+    const AccountScreen(),
   ];
 
-  static List<BottomNavigationBarItem> navigations = [
+  final List<BottomNavigationBarItem> navigations = [
     const BottomNavigationBarItem(
       icon: Icon(Icons.home),
       label: 'Home',
@@ -32,7 +37,7 @@ class MainScreen extends ConsumerWidget {
   ];
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final nav = ref.watch(navigationProvider);
 
     return Scaffold(

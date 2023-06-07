@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_news/domain/entities/news.dart';
 import 'package:flutter_news/screens/detail_screen.dart';
 import 'package:flutter_news/widgets/buy_button.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class NewsCard extends StatelessWidget {
+class NewsCard extends StatefulHookConsumerWidget {
+  final News item;
+
   const NewsCard({
     super.key,
     required this.item,
   });
 
-  final News item;
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _NewsCardState();
+}
 
-  void handleBuy() {
-    // Function to handle the button press
-    print('Buy Now pressed!');
-    // Add your custom logic here
-  }
-
+class _NewsCardState extends ConsumerState<NewsCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -30,16 +30,16 @@ class NewsCard extends StatelessWidget {
             children: [
               ClipRRect(
                   borderRadius: BorderRadius.circular(16.0),
-                  child: item.thumbnail != null
+                  child: widget.item.thumbnail != null
                       ? FadeInImage.assetNetwork(
                           placeholder: 'assets/images/default-image.png',
-                          image: item.thumbnail.toString())
+                          image: widget.item.thumbnail.toString())
                       : Image.asset('assets/images/default-image.png')),
               const SizedBox(
                 height: 16.0,
               ),
               Text(
-                item.title,
+                widget.item.title,
                 style: const TextStyle(
                     fontSize: 20.0, fontWeight: FontWeight.w500),
               ),
@@ -64,7 +64,26 @@ class NewsCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const BuyButton(),
+                  if (widget.item.isBought == true)
+                    SizedBox(
+                      height: 48.0,
+                      child: Row(
+                        children: [
+                          Text(
+                            "\$ 50.000",
+                            style: TextStyle(color: Colors.grey[600]),
+                          ),
+                          const Icon(
+                            Icons.bookmark_add,
+                            color: Colors.blue,
+                          )
+                        ],
+                      ),
+                    )
+                  else
+                    BuyButton(
+                      item: widget.item,
+                    ),
                 ],
               )
             ],

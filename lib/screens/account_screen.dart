@@ -5,11 +5,16 @@ import 'package:flutter_news/screens/transaction_screen.dart';
 import 'package:flutter_news/widgets/logo.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AccountScreen extends ConsumerWidget {
+class AccountScreen extends ConsumerStatefulWidget {
   const AccountScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<AccountScreen> createState() => _AccountScreenState();
+}
+
+class _AccountScreenState extends ConsumerState<AccountScreen> {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Logo(),

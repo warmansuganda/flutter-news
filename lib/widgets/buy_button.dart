@@ -1,12 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_news/domain/entities/news.dart';
+import 'package:flutter_news/providers/news/news_provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class BuyButton extends StatelessWidget {
-  const BuyButton({Key? key}) : super(key: key);
+class BuyButton extends ConsumerWidget {
+  final News item;
+
+  const BuyButton({Key? key, required this.item}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    void handleBuy() {
+      String msg = "You already bought";
+      if (item.isBought == null || item.isBought == false) {
+        ref.read(newsProvider.notifier).buy(item);
+        msg = "Success";
+      }
+      Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_SHORT,
+        timeInSecForIosWeb: 1,
+      );
+    }
+
     return OutlinedButton(
-      onPressed: () {},
+      onPressed: handleBuy,
       style: OutlinedButton.styleFrom(
           backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(

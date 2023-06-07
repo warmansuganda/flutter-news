@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_news/domain/entities/news.dart';
+import 'package:flutter_news/providers/news/news_provider.dart';
 import 'package:flutter_news/widgets/empty_state.dart';
 import 'package:flutter_news/widgets/logo.dart';
 import 'package:flutter_news/widgets/news_card.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import '../providers/news/transaction_provider.dart';
 
 class LibraryScreen extends ConsumerWidget {
   const LibraryScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<News> items = ref.watch(navigationProvider);
+    final news = ref.watch(newsProvider);
+    final items =
+        news.items.where((element) => element.isBought == true).toList();
 
     final controller = ScrollController();
 

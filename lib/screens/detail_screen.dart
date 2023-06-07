@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_news/widgets/buy_button.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class DetailScreen extends HookConsumerWidget {
+class DetailScreen extends StatefulHookConsumerWidget {
   static const routeName = '/detail_screen';
 
   const DetailScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends ConsumerState<DetailScreen> {
+  @override
+  Widget build(BuildContext context) {
+    @override
     final count = useState(0);
 
     return Scaffold(
@@ -33,8 +38,8 @@ class DetailScreen extends HookConsumerWidget {
           ],
         ),
       ),
-      floatingActionButton: const BuyButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: BuyButton(item: ,),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
