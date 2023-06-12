@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_news/screens/main_screen.dart';
+import 'package:flutter_news/screens/onboarding_screen.dart';
 import 'package:flutter_news/widgets/logo.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen>
         pageBuilder: (context, animation, secondaryAnimation) {
           return FadeTransition(
             opacity: animation,
-            child: const MainScreen(),
+            child: const OnboardingScreen(),
           );
         },
       ),

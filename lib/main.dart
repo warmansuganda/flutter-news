@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_news/screens/coupon_screen.dart';
 import 'package:flutter_news/screens/detail_screen.dart';
 import 'package:flutter_news/screens/main_screen.dart';
+import 'package:flutter_news/screens/onboarding_screen.dart';
 import 'package:flutter_news/screens/splash_screen.dart';
 import 'package:flutter_news/screens/transaction_screen.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
       initialRoute: SplashScreen.routeName,
       routes: {
         SplashScreen.routeName: (context) => const SplashScreen(),
+        OnboardingScreen.routeName: (context) => const OnboardingScreen(),
         MainScreen.routeName: (context) => const MainScreen(),
         DetailScreen.routeName: (context) => const DetailScreen(),
         TransactionScreen.routeName: (context) => const TransactionScreen(),

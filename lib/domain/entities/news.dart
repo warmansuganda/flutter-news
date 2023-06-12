@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class News {
   final String id;
   final String webUrl;
