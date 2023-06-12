@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_news/domain/entities/news.dart';
-import 'package:flutter_news/providers/news/news_provider.dart';
+import 'package:flutter_news/providers/transaction/transaction_provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -14,7 +14,7 @@ class BuyButton extends ConsumerWidget {
     void handleBuy() {
       String msg = "You already bought";
       if (item.isBought == null || item.isBought == false) {
-        ref.read(newsProvider.notifier).buy(item);
+        ref.read(transactionProvider.notifier).buy(item);
         msg = "Success";
       }
       Fluttertoast.showToast(

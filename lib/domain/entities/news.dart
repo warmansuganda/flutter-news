@@ -46,4 +46,15 @@ class News {
       isBought: isBought ?? this.isBought,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'webUrl': webUrl,
+      'title': title,
+      'abstract': abstract,
+      'thumbnail': thumbnail,
+      'isBought': isBought,
+    };
+  }
 }

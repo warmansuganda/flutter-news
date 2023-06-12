@@ -58,11 +58,12 @@ class NewsNotifier extends StateNotifier<NewsState> {
     }
   }
 
-  void buy(News item) {
+  News bought(News item) {
     List<News> items = [...state.items];
     int index = state.items.indexWhere((element) => element.id == item.id);
     items[index] = items[index].copyWith(isBought: true);
     state = state.copyWith(items: items);
+    return items[index];
   }
 }
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_news/providers/news/news_provider.dart';
+import 'package:flutter_news/providers/news/library_provider.dart';
 import 'package:flutter_news/widgets/empty_state.dart';
 import 'package:flutter_news/widgets/logo.dart';
 import 'package:flutter_news/widgets/news_card.dart';
@@ -10,9 +10,7 @@ class LibraryScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final news = ref.watch(newsProvider);
-    final items =
-        news.items.where((element) => element.isBought == true).toList();
+    final library = ref.watch(libraryProvider);
 
     final controller = ScrollController();
 
@@ -45,15 +43,15 @@ class LibraryScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: items.isNotEmpty
+      body: library.isNotEmpty
           ? ListView.separated(
               padding: const EdgeInsets.only(top: 10.0),
               controller: controller,
               shrinkWrap: true,
-              itemCount: items.length,
+              itemCount: library.length,
               separatorBuilder: (context, inde) => const Divider(),
               itemBuilder: (context, index) {
-                return NewsCard(item: items[index]);
+                return NewsCard(item: library[index]);
               })
           : const EmptyState(),
     );
