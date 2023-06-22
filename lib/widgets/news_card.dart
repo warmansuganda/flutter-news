@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_news/domain/entities/news.dart';
 import 'package:flutter_news/screens/detail_screen.dart';
+import 'package:flutter_news/utils/datetime_formater.dart';
+import 'package:flutter_news/utils/number_formater.dart';
 import 'package:flutter_news/widgets/buy_button.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -51,7 +53,7 @@ class _NewsCardState extends ConsumerState<NewsCard> {
                     spacing: 8.0,
                     children: [
                       Text(
-                        'Category',
+                        widget.item.sectionName ?? '-',
                         style: TextStyle(color: Colors.grey[600]),
                       ),
                       Text(
@@ -59,7 +61,7 @@ class _NewsCardState extends ConsumerState<NewsCard> {
                         style: TextStyle(color: Colors.grey[600]),
                       ),
                       Text(
-                        '5h',
+                        DateTimeFormater.diffForHumman(widget.item.pubDate),
                         style: TextStyle(color: Colors.grey[600]),
                       ),
                     ],
@@ -70,7 +72,7 @@ class _NewsCardState extends ConsumerState<NewsCard> {
                       child: Row(
                         children: [
                           Text(
-                            "\$ 50.000",
+                            "\$ ${NumberFormater.currency(widget.item.price)}",
                             style: TextStyle(color: Colors.grey[600]),
                           ),
                           const Icon(

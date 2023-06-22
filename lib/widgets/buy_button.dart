@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_news/domain/entities/news.dart';
 import 'package:flutter_news/providers/transaction/transaction_provider.dart';
+import 'package:flutter_news/utils/number_formater.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 
 class BuyButton extends ConsumerWidget {
   final News item;
@@ -30,17 +32,17 @@ class BuyButton extends ConsumerWidget {
           backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(50.0))),
-      child: const Wrap(
+      child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
         spacing: 6.0,
         children: [
           Text(
-            '\$ 50.000',
+            "\$ ${NumberFormater.currency(item.price)}",
           ),
-          Text(
+          const Text(
             '|',
           ),
-          Text(
+          const Text(
             'Buy Now',
           ),
         ],

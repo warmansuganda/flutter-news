@@ -14,7 +14,7 @@ class NewsRepository {
     Response response = await get(url);
     Map jsonResponse = jsonDecode(response.body);
     List<News> docs = (jsonResponse['response']['docs'] as List<dynamic>)
-        .map((json) => News.fromJson(json))
+        .map((json) => News.fromApi(json))
         .toList();
     MetaReponse meta = MetaReponse();
     return RepositoryResponse(docs: docs, meta: meta);

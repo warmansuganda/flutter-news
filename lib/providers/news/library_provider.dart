@@ -11,17 +11,7 @@ class LibraryNotifier extends StateNotifier<List<News>> {
     sharedPreferences = await SharedPreferences.getInstance();
     var library = sharedPreferences.getStringList("library");
     state = library != null
-        ? library.map((news) {
-            final json = jsonDecode(news);
-            print(json);
-            return News(
-                id: json['id'],
-                webUrl: json['webUrl'],
-                title: json['title'],
-                abstract: json['abstract'],
-                thumbnail: json['thumbnail'],
-                isBought: json['isBought']);
-          }).toList()
+        ? library.map((news) => News.fromJson(jsonDecode(news))).toList()
         : [];
   }
 

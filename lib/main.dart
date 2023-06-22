@@ -6,8 +6,10 @@ import 'package:flutter_news/screens/onboarding_screen.dart';
 import 'package:flutter_news/screens/splash_screen.dart';
 import 'package:flutter_news/screens/transaction_screen.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 
 void main() {
+  Intl.defaultLocale = 'id';
   runApp(const ProviderScope(child: MyApp()));
 }
 
