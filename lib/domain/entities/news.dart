@@ -1,11 +1,16 @@
+import 'package:flutter_news/domain/entities/author.dart';
+
 class News {
   final String id;
   final String webUrl;
   final String title;
+  final String author;
+  final List<Author> contributors;
   final String abstract;
   final double price;
   final String? thumbnail;
   final String? sectionName;
+  final String? leadParagraph;
   final bool? isBought;
   final DateTime pubDate;
 
@@ -13,10 +18,13 @@ class News {
       {required this.id,
       required this.webUrl,
       required this.title,
+      required this.author,
+      required this.contributors,
       required this.abstract,
       required this.price,
       this.thumbnail,
       this.sectionName,
+      this.leadParagraph,
       this.isBought,
       required this.pubDate});
 
@@ -47,8 +55,15 @@ class News {
         id: json['_id'],
         webUrl: json['web_url'],
         title: json['headline']['main'],
+        author: json['byline']['original'] ?? '',
+        contributors: json['byline']['person'] != null
+            ? (json['byline']['person'] as List<dynamic>)
+                .map((contributor) => Author.fromApi(contributor))
+                .toList()
+            : [],
         abstract: json['abstract'],
         sectionName: json['section_name'],
+        leadParagraph: json['lead_paragraph'],
         price: getPrice(pubDate),
         thumbnail: thumbnail != null
             ? 'https://static01.nyt.com/${thumbnail['url']}'
@@ -62,10 +77,17 @@ class News {
         id: json['id'],
         webUrl: json['webUrl'],
         title: json['title'],
+        author: json['author'],
+        contributors: json['contributors'] != null
+            ? (json['contributors'] as List<dynamic>)
+                .map((contributor) => Author.fromJson(contributor))
+                .toList()
+            : [],
         abstract: json['abstract'],
         price: json['price'],
         sectionName: json['sectionName'],
         thumbnail: json['thumbnail'],
+        leadParagraph: json['leadParagraph'],
         isBought: json['isBought'],
         pubDate: DateTime.parse(json['pubDate']));
   }
@@ -74,10 +96,13 @@ class News {
     String? id,
     String? webUrl,
     String? title,
+    String? author,
+    List<Author>? contributors,
     String? abstract,
     double? price,
     String? thumbnail,
     String? sectionName,
+    String? leadParagraph,
     bool? isBought,
     DateTime? pubDate,
   }) {
@@ -85,9 +110,12 @@ class News {
       id: id ?? this.id,
       webUrl: webUrl ?? this.webUrl,
       title: title ?? this.title,
+      author: author ?? this.author,
+      contributors: contributors ?? this.contributors,
       abstract: abstract ?? this.abstract,
       price: price ?? this.price,
       sectionName: sectionName ?? this.sectionName,
+      leadParagraph: leadParagraph ?? this.leadParagraph,
       thumbnail: thumbnail ?? this.thumbnail,
       isBought: isBought ?? this.isBought,
       pubDate: pubDate ?? this.pubDate,
@@ -99,6 +127,8 @@ class News {
       'id': id,
       'webUrl': webUrl,
       'title': title,
+      'author': author,
+      'contributors': contributors.map((contributor) => contributor.toJson()),
       'abstract': abstract,
       'price': price,
       'thumbnail': thumbnail,

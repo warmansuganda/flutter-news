@@ -23,7 +23,8 @@ class _NewsCardState extends ConsumerState<NewsCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushNamed(DetailScreen.routeName);
+        Navigator.of(context)
+            .pushNamed(DetailScreen.routeName, arguments: widget.item);
       },
       child: Padding(
           padding: const EdgeInsets.only(left: 10.0, right: 10.0),

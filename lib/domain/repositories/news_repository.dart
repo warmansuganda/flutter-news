@@ -16,6 +16,7 @@ class NewsRepository {
     List<News> docs = (jsonResponse['response']['docs'] as List<dynamic>)
         .map((json) => News.fromApi(json))
         .toList();
+    print(docs);
     MetaReponse meta = MetaReponse();
     return RepositoryResponse(docs: docs, meta: meta);
   }
