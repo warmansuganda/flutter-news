@@ -3,6 +3,8 @@ import 'package:flutter_news/domain/entities/news.dart';
 import 'package:flutter_news/utils/datetime_formater.dart';
 import 'package:flutter_news/widgets/buy_button.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailScreen extends StatefulHookConsumerWidget {
   static const routeName = '/detail_screen';
@@ -14,9 +16,19 @@ class DetailScreen extends StatefulHookConsumerWidget {
 }
 
 class _DetailScreenState extends ConsumerState<DetailScreen> {
+  Future<void> launchInBrowser(Uri url) async {
+    if (!await launchUrl(
+      url,
+      mode: LaunchMode.externalApplication,
+    )) {
+      throw Exception('Could not launch $url');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final item = ModalRoute.of(context)!.settings.arguments as News;
+    final Uri toLaunch = Uri.parse(item.webUrl);
 
     return Scaffold(
       appBar: AppBar(
@@ -49,14 +61,28 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const CircleAvatar(
-                              backgroundColor: Colors.grey,
-                              radius: 12,
-                              child: Icon(
-                                Icons.person,
-                                size: 12.0,
-                                color: Colors.white,
-                              ),
+                            Wrap(
+                              spacing: -10.0,
+                              children: List<Widget>.from(item.contributors
+                                  .map((contributor) => Container(
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            color: Colors.white,
+                                            width: 2.0,
+                                          ),
+                                        ),
+                                        child: const CircleAvatar(
+                                          backgroundColor: Colors.grey,
+                                          radius: 10,
+                                          child: Icon(
+                                            Icons.person,
+                                            size: 12.0,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ))
+                                  .toList()),
                             ),
                             const SizedBox(
                               height: 6.0,
@@ -74,13 +100,19 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                       Row(
                         children: [
                           IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Share.share(
+                                    'Check out the news here:\n$toLaunch',
+                                    subject: item.title);
+                              },
                               icon: Icon(
                                 Icons.share,
                                 color: Colors.grey[600],
                               )),
                           IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                launchInBrowser(toLaunch);
+                              },
                               icon: Icon(
                                 Icons.open_in_new,
                                 color: Colors.grey[600],

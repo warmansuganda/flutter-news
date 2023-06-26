@@ -128,7 +128,9 @@ class News {
       'webUrl': webUrl,
       'title': title,
       'author': author,
-      'contributors': contributors.map((contributor) => contributor.toJson()),
+      'contributors': contributors.isNotEmpty
+          ? contributors.map((contributor) => contributor.toJson()).toList()
+          : [],
       'abstract': abstract,
       'price': price,
       'thumbnail': thumbnail,
